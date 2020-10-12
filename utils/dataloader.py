@@ -43,6 +43,7 @@ class SkeletonFeeder(torch.utils.data.Dataset):
 
         ### get all files ending in *_data.pkl
         file_list = np.array(sorted(glob.glob(self.data_path+'*/*_data.pkl', recursive=True))) 
+        print(file_list)
 
         if self.random_shuffle==True:
             np.random.shuffle(file_list)
@@ -114,8 +115,6 @@ class SkeletonFeeder(torch.utils.data.Dataset):
         
         # get data
         list_sequences = self.list_sequences
-        sequence_length = self.sequence_length
-        fps = self.fps
 
         x_numpy = []
         for a in range(len(list_sequences[index][0])):
@@ -124,7 +123,7 @@ class SkeletonFeeder(torch.utils.data.Dataset):
 
             ### get most likely signer
             if (np.max(temp_data[:,2,:,1])>0):
-                temp_data = get_main_signer(temp_data)
+                temp_data = get_main_signer(temp_data, self.fps)
             else: 
                 temp_data = temp_data[:,:,:,0][:,:,:,np.newaxis]
 
