@@ -28,8 +28,7 @@ class SkeletonFeeder(torch.utils.data.Dataset):
                  normalise = True, 
                  visualise = False, 
                  body_type = 'full', 
-                 fps = 25,
-                 save_metadata=None):
+                 fps = 25):
 
         self.nth_element = nth_element
         self.data_path = data_path
@@ -100,16 +99,16 @@ class SkeletonFeeder(torch.utils.data.Dataset):
     
         if self.random_shuffle==True:
             random.shuffle(list_sequences)
-        
-        ### save names of sequences in order of appearance 
-        if save_metadata is not None:
-            print('saving metadata at ', save_metadata)
-            pickle.dump(list_sequences, open(save_metadata, 'wb'))
 
         self.list_sequences = list_sequences  
+        self.get_metadata()
+
 
     def __len__(self):
         return len(self.list_sequences)
+
+    def get_metadata(self): 
+        return self.list_sequences
 
     def __getitem__(self, index):
         
