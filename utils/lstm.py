@@ -18,8 +18,8 @@ class SimpleLSTM(nn.Module):
 
     def init_hidden(self, batch_size):
         return (
-            torch.randn(2, batch_size, self.hidden_dim // 2,).cuda(),
-            torch.randn(2, batch_size, self.hidden_dim // 2).cuda(),
+            torch.zeros(2, batch_size, self.hidden_dim // 2,).cuda(),
+            torch.zeros(2, batch_size, self.hidden_dim // 2).cuda(),
         )
 
     def forward(self, embeds):

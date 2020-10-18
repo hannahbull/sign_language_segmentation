@@ -42,7 +42,6 @@ class SkeletonFeeder(torch.utils.data.Dataset):
 
         ### get all files ending in *_data.pkl
         file_list = np.array(sorted(glob.glob(self.data_path+'*/*_data.pkl', recursive=True))) 
-        print(file_list)
 
         if self.random_shuffle==True:
             np.random.shuffle(file_list)
@@ -137,8 +136,10 @@ class SkeletonFeeder(torch.utils.data.Dataset):
                 temp_data = temp_data[:,:,85:,:]
             elif self.body_type == 'bodyhands': 
                 temp_data = temp_data[:,:,70:,:]
-            else: 
+            elif self.body_type == 'full': 
                 pass
+            else: 
+                print('please select full/headbody/head/body/hands/bodyhands')
 
             #### normalise
             if self.normalise==True: 
