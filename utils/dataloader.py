@@ -7,6 +7,7 @@ import pickle
 import pandas as pd
 import random
 import matplotlib.pyplot as plt
+import os
 
 class SkeletonFeeder(torch.utils.data.Dataset):
     """ Feeder for skeleton-based action recognition
@@ -41,7 +42,7 @@ class SkeletonFeeder(torch.utils.data.Dataset):
         self.fps = fps
 
         ### get all files ending in *_data.pkl
-        file_list = np.array(sorted(glob.glob(self.data_path+'*/*_data.pkl', recursive=True))) 
+        file_list = np.array(sorted([os.path.join(self.data_path,i) for i in os.listdir(self.data_path) if i.endswith('.pkl')])) 
 
         if self.random_shuffle==True:
             np.random.shuffle(file_list)

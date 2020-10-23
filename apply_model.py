@@ -26,6 +26,7 @@ output_path = args_list['output_path']
 which_keypoints = args_list['which_keypoints']
 fps = args_list['fps']
 
+# fixed arguments
 nth_element = 2
 converted_fps = 25
 
