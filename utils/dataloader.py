@@ -42,17 +42,15 @@ class SkeletonFeeder(torch.utils.data.Dataset):
         self.fps = fps
 
         ### get all files ending in *_data.pkl
-        file_list = np.array(sorted([os.path.join(self.data_path,i) for i in os.listdir(self.data_path) if i.endswith('.pkl')])) 
+        file_list = np.array(sorted(glob.glob(self.data_path +'/**/*_data.pkl', recursive=True)))
 
         if self.random_shuffle==True:
             np.random.shuffle(file_list)
 
         ### get list of video names, start frame and length for each file in file_list
-        file_df = [re.sub('/*_data.pkl', '', a) for a in file_list]
-        file_df = [re.sub(self.data_path, '', a) for a in file_df]
-        file_df = [re.sub('/', '_', a) for a in file_df]
-        file_df = [a.split('_') for a in file_df]
-        file_df = [[file_list[i], int(file_df[i][1]), int(file_df[i][2])] for i in range(len(file_df))] # file name, start frame, length
+        starts_ = [int(f.split('/')[-1].split('_')[-3]) for f in file_list]
+        lengths_ = [int(f.split('/')[-1].split('_')[-2]) for f in file_list]
+        file_df = [[file_list[i], int(starts_[i]), int(lengths_[i])] for i in range(len(file_list))] # file name, start frame, length
 
         ### make sequences of 200 frames 
         list_sequences = []
