@@ -15,10 +15,11 @@ class SkeletonFeeder(torch.utils.data.Dataset):
         data_path: the path to the folder containing the skeleton sequences
         nth_element: take every nth frame 
         sequence_length: temporal length of sequences
-        random_shift: If true, randomly pad zeros at the begining or end of sequence
-        window_size: The length of the output sequence
-        normalization: If true, normalize input sequence
-        debug: If true, only use the first 100 samples
+        random_shuffle: If true, randomly shuffle the videos and also randomly shuffle the sequences
+        random_flip: Randomly alternate between left handed and right handed signers
+        visualise: visualise skeletons
+        body_type: Specify "full", "body", "hands", "head", "headbody", "bodyhands".
+        fps: Framerate. Only used in function get_main_signer as interval length
     """
     def __init__(self,
                  data_path, 
@@ -41,7 +42,7 @@ class SkeletonFeeder(torch.utils.data.Dataset):
         self.body_type = body_type
         self.fps = fps
 
-        ### get all files ending in *_data.pkl
+        ### get all files ending in *_data.pkl. Accept both subfolders and files
         file_list = np.array(sorted(glob.glob(self.data_path +'/**/*_data.pkl', recursive=True)))
 
         if self.random_shuffle==True:
