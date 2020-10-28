@@ -21,7 +21,7 @@ If this code is of use to you, please cite the following article:
 
 The data used to train the model is MEDIAPI-SKEL, a 2D-skeleton database of French Sign Language video with aligned French subtitles, available on [Ortolang](https://www.ortolang.fr/market/corpora/mediapi-skel/) for research purposes. 
 
-> Bull, H., Braffort, A., Gouiff`es, M.: MEDIAPI-SKEL - a 2D-skeleton video database of French Sign Language with aligned French subtitles. In: Proceedings of the Twelfth International Conference on Language Resources and Evaluation(LREC’20). pp. 6063–6068. European Language Resource Association (ELRA), Marseille, France (May 2020)
+> Bull, H., Braffort, A., Gouiffès, M.: MEDIAPI-SKEL - a 2D-skeleton video database of French Sign Language with aligned French subtitles. In: Proceedings of the Twelfth International Conference on Language Resources and Evaluation(LREC’20). pp. 6063–6068. European Language Resource Association (ELRA), Marseille, France (May 2020)
 
 ```tex
 @inproceedings{bull2020mediapiskel,
@@ -32,7 +32,7 @@ The data used to train the model is MEDIAPI-SKEL, a 2D-skeleton database of Fren
   address = {Marseille, France},
   month = {May},
   pages ={6063--6068},
-  publisher = "European Language Resource Association (ELRA)",
+  publisher = {European Language Resource Association (ELRA)},
 }
 ```
 
@@ -52,12 +52,15 @@ Subtitle file (.srt) with time tags corresponding to each detected sign language
 
 An example of applying this model to extract the Subtitle-Units for a YouTube video is provided at [this Google Colab link](https://colab.research.google.com/drive/1YAfwTycO2ZvDGFHwbx5pSmHbpAlcOylN?usp=sharing). 
 
-To produce 
+To produce .srt files with Subtitle-Units for sequences of OpenPose 2D keypoints, run: 
 
-```python apply_model.py --which_keypoints 'body'```
+```python apply_model.py --input_folder 'data' --output_folder 'output' --which_keypoints 'body' --fps 25```
+
+To obtain predictions for the MEDIAPI-SKEL test set, run [clean_op_data_sl](https://github.com/hannahbull/clean_op_data_sl) on the OpenPose 2D keypoints and place the folders containing the `.pkl` files in `mediapiskel_data/skeleton_sequences`. Place the `.vtt` subtitles in the folder `mediapiskel_data/subtitles`. Run: 
+
+```python reproduce_results_mediapiskel.py --input_folder 'mediapiskel_data/skeleton_sequences' --which_keypoints 'full' --video_information 'mediapiskel_data/video_information.csv' --subtitle_folder 'mediapiskel_data/subtitles'```
 
 # References
-
 
 OpenPose: [https://github.com/CMU-Perceptual-Computing-Lab/openpose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
 
