@@ -92,7 +92,7 @@ for v in videos:
         subs.append(srt.Subtitle(index=n, 
                                 start=start_SU[i], 
                                 end=end_SU[i], 
-                                content='SU', proprietary=''))
+                                content='SU '+str(n), proprietary=''))
 
     f = open(os.path.join(output_folder, v+'.srt'), 'w')
     f.writelines(srt.compose(subs))
