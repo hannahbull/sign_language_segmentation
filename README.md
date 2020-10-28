@@ -4,7 +4,7 @@ This code enables segmentation of sign language video into subtitle-units, i.e. 
 
 If this code is of use to you, please cite the following article: 
 
-> Bull, H., Gouiffès, M., Braffort, A.: Automatic Segmentation of Sign Language into Subtitle-Units. In: Proceedings of the European Conference on Computer Vision (ECCV), Sign Language Recognition, Translation and Production (SLRTP) Workshop (2020). 
+> Bull, H., Gouiffès, M., Braffort, A.: Automatic Segmentation of Sign Language into Subtitle-Units. In: Proceedings of the European Conference on Computer Vision (ECCV), Sign Language Recognition, Translation and Production (SLRTP) Workshop (2020)
 
 ```tex
 @article{bull2020automatic,
@@ -14,6 +14,25 @@ If this code is of use to you, please cite the following article:
     title = {{Automatic Segmentation of Sign Language into Subtitle-Units}},
     url = {https://slrtp.com/papers/full_papers/SLRTP.FP.01.011.paper.pdf},
     year = {2020}
+}
+```
+
+# Data used to train the model 
+
+The data used to train the model is MEDIAPI-SKEL, a 2D-skeleton database of French Sign Language video with aligned French subtitles, available on [Ortolang](https://www.ortolang.fr/market/corpora/mediapi-skel/) for research purposes. 
+
+> Bull, H., Braffort, A., Gouiff`es, M.: MEDIAPI-SKEL - a 2D-skeleton video database of French Sign Language with aligned French subtitles. In: Proceedings of the Twelfth International Conference on Language Resources and Evaluation(LREC’20). pp. 6063–6068. European Language Resource Association (ELRA), Marseille, France (May 2020)
+
+```tex
+@inproceedings{bull2020mediapiskel,
+  title={{MEDIAPI}-{SKEL} - A 2{D}-Skeleton Video Database of French Sign Language With Aligned French Subtitles},
+  author={Bull, Hannah and Braffort, Annelies and Gouiff\`es, Mich\`ele},
+  booktitle={Proceedings of the Twelfth International Conference on Language Resources and Evaluation (LREC'20)},
+  year={2020},
+  address = {Marseille, France},
+  month = {May},
+  pages ={6063--6068},
+  publisher = "European Language Resource Association (ELRA)",
 }
 ```
 
@@ -31,7 +50,9 @@ Subtitle file (.srt) with time tags corresponding to each detected sign language
 
 # Example 
 
-An example of applying this model to extract the Subtitle-Units for a YouTube video is provided at [this Google Colab link](https://colab.research.google.com/drive/1YAfwTycO2ZvDGFHwbx5pSmHbpAlcOylN?usp=sharing)
+An example of applying this model to extract the Subtitle-Units for a YouTube video is provided at [this Google Colab link](https://colab.research.google.com/drive/1YAfwTycO2ZvDGFHwbx5pSmHbpAlcOylN?usp=sharing). 
+
+To produce 
 
 ```python apply_model.py --which_keypoints 'body'```
 
