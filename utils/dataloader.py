@@ -120,10 +120,11 @@ class SkeletonFeeder(torch.utils.data.Dataset):
             temp_data = data[2][list_sequences[index][1][a]:list_sequences[index][2][a]]
 
             ### get most likely signer
-            if (np.max(temp_data[:,2,:,1])>0):
-                temp_data = get_main_signer(temp_data, self.fps)
-            else: 
-                temp_data = temp_data[:,:,:,0][:,:,:,np.newaxis]
+            if temp_data.shape[3]>1:
+                if (np.max(temp_data[:,2,:,1])>0):
+                    temp_data = get_main_signer(temp_data, self.fps)
+                else: 
+                    temp_data = temp_data[:,:,:,0][:,:,:,np.newaxis]
 
             ### which skeleton keypoints to include? 
             if self.body_type == 'headbody': 

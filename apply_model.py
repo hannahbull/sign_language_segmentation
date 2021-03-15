@@ -11,6 +11,8 @@ import argparse
 import glob
 import pandas as pd
 
+torch.cuda.current_device()
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--input_folder', type=str, help='Path to folder containing .pkl files with skeleton sequences for a single video.', 
                     default='data')
@@ -20,6 +22,7 @@ parser.add_argument('--which_keypoints', type=str, help='Specify "full", "body",
                     default='full')
 parser.add_argument('--fps', type=float, default=25., help='Framerate of original video, overwritten by fps_dictionary if not None')
 parser.add_argument('--fps_dictionary', type=str, default=None, help='None or path to dictionary with keys as video names and frame rates as values')
+parser.add_argument('--get_probabilities', type=bool, default=False, help='Export probabilities to output_folder')
 
 args = parser.parse_args()
 args_list = vars(args)
@@ -30,6 +33,7 @@ output_folder = args_list['output_folder']
 which_keypoints = args_list['which_keypoints']
 fps = args_list['fps']
 fps_dict = args_list['fps_dictionary']
+get_probabilities = args_list['get_probabilities']
 
 # fixed arguments
 nth_element = 2
@@ -55,11 +59,19 @@ for v in videos:
 
 ### timetags for start and end of subtitle-units
 for v in videos: 
+
+    if get_probabilities: 
+        probs = []
+        min_len_vid = 0
+
     start_SU = []
     end_SU = []
 
     for k in predictions[v].keys(): 
-        starting_time = datetime.timedelta(seconds=int(k.split('/')[-1].split('_')[-3])/fps_dict[v])
+        starting_time = datetime.timedelta(seconds=int(k.split('/')[-1].split('_')[-3])/converted_fps_dict[v])
+        if get_probabilities: 
+            probs.append([int(k.split('/')[-1].split('_')[-3]), list(predictions[v][k])])
+            min_len_vid = max(min_len_vid, int(k.split('/')[-1].split('_')[-3])+len(list(predictions[v][k])))
         rounded_preds = list(np.round(predictions[v][k]))
         rounded_preds = np.array([0] + rounded_preds + [0], int)
         differentiate = np.diff(rounded_preds)
@@ -78,7 +90,7 @@ for v in videos:
     end_SU = sorted(end_SU)
 
     ### add padding to SUs
-    start_SU[0] = min(datetime.timedelta(seconds=0), start_SU[0]-datetime.timedelta(seconds=2.5/25))
+    start_SU[0] = max(datetime.timedelta(seconds=0), start_SU[0]-datetime.timedelta(seconds=2.5/25))
     end_SU[-1] = end_SU[0]+datetime.timedelta(seconds=2.5/25)
     for i in range(1, len(start_SU)): 
         start_SU[i] = max(end_SU[i-1], start_SU[i]-datetime.timedelta(seconds=2.5/25)) # max end of previous SU and start of next SU minus padding
@@ -97,3 +109,13 @@ for v in videos:
     f = open(os.path.join(output_folder, v+'.srt'), 'w')
     f.writelines(srt.compose(subs))
     f.close()
+    
+    ### write probabilities
+    if get_probabilities: 
+        prob_array = np.zeros(min_len_vid)
+        for l in range(len(probs)): 
+            prob_array[probs[l][0]:(probs[l][0]+len(probs[l][1]))]=probs[l][1]
+        np.save(os.path.join(output_folder, v+'.npy'), prob_array)
+        
+
+    
